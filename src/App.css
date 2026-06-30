@@ -1,0 +1,65 @@
+.container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.sidebar {
+    width: 280px;
+    flex: 0 0 280px;
+    overflow-y: auto;
+    border-right: 1px solid var(--border);
+    background: var(--bg-secondary);
+}
+
+/* 左侧头部*/
+.sidebar-header {
+    min-height: 70px;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.brand-block {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 设置logo */
+.brand-mark {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, var(--primary), #5aa2ff);
+    color: white;
+    font-weight: 800;
+}
+
+h1 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.brand-block span {
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.icon-button {
+    width: 40px;
+    min-height: 40px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-primary);
+}

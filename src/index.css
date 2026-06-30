@@ -1,4 +1,8 @@
 :root {
-  
+    --text-primary: #212529;
+    --bg-primary: #ffffff;
+    --border: #dde4ee;
+    --bg-secondary: #f6f8fb;
+    --primary: #0d6efd;
+    --text-secondary: #6c757d;
 }
-
