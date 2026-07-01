@@ -195,6 +195,9 @@ select,
     border-radius: 6px;
     background: var(--bg-primary);
     padding: 0 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .primary-button {

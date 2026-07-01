@@ -1,4 +1,4 @@
-import { Moon, Search, Trash2 } from 'lucide-react';
+import { Moon, Search, Trash2, Plus } from 'lucide-react';
 import { useState } from 'react';
 import './App.css';
 
@@ -15,8 +15,20 @@ const initialTasks: TodoTask[] = [
   { id: 2, title: '完成左侧侧边栏', category: '学习', completed: false, dueDate: '本周' },
   { id: 3, title: '完成左侧侧边栏', category: '生活', completed: true, dueDate: '无日期' }
 ];
+
+
 function App() {
   const [tasks, setTasks] = useState(initialTasks);
+  const [newTitle, setNewTitle] = useState('');
+  //添加任务
+  function addTask() {
+    setTasks((current) => [
+      { id: Date.now(), title: '新任务添加', category: '工作', completed: false, dueDate: '今天' },
+      ...current
+    ]);
+    console.log(tasks.values);
+    setNewTitle('');
+  }
   return (
     <div className="container">
       <aside className='sidebar'>
@@ -67,7 +79,7 @@ function App() {
           <select defaultValue="list"><option value="list">列表视图</option></select>
           <select defaultValue="active"><option value="active">未完成</option></select>
           <select defaultValue="all"><option value="all">全部日期</option></select>
-          <button className="primary-button" type="button">新任务</button>
+          <button className="primary-button" type="button" onClick={addTask}><Plus size={18} />新任务</button>
         </header>
         <section className="tasks-container">
 
