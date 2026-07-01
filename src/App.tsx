@@ -44,7 +44,23 @@ function App() {
       </aside>
 
 
-
+      <main className="main-content">
+        <header className="app-header">
+          <label className="search-box">
+            <Search size={18} />
+            <input readOnly placeholder="搜索任务、描述或标签" />
+          </label>
+          <select defaultValue="list"><option value="list">列表视图</option></select>
+          <select defaultValue="active"><option value="active">未完成</option></select>
+          <select defaultValue="all"><option value="all">全部日期</option></select>
+          <button className="primary-button" type="button">新任务</button>
+        </header>
+        <section className="tasks-container">
+          <article className="task-item"><h2>完成左侧侧边栏</h2><p>工作 · 高优先级 · 今天</p></article>
+          <article className="task-item"><h2>完成左侧侧边栏</h2><p>工作 · 高优先级 · 今天</p></article>
+          <article className="task-item"><h2>完成左侧侧边栏</h2><p>工作 · 高优先级 · 今天</p></article>
+        </section>
+      </main>
     </div>
   )
 }
