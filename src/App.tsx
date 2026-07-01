@@ -1,8 +1,22 @@
-import { Moon, Search } from 'lucide-react';
+import { Moon, Search, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 import './App.css';
+
+type TodoTask = {
+  id: number;
+  title: string;
+  category: string;
+  completed: boolean;
+  dueDate: string;
+};
+
+const initialTasks: TodoTask[] = [
+  { id: 1, title: '完成左侧侧边栏', category: '工作', completed: false, dueDate: '今天' },
+  { id: 2, title: '完成左侧侧边栏', category: '学习', completed: false, dueDate: '本周' },
+  { id: 3, title: '完成左侧侧边栏', category: '生活', completed: true, dueDate: '无日期' }
+];
 function App() {
-
-
+  const [tasks, setTasks] = useState(initialTasks);
   return (
     <div className="container">
       <aside className='sidebar'>
@@ -56,9 +70,22 @@ function App() {
           <button className="primary-button" type="button">新任务</button>
         </header>
         <section className="tasks-container">
-          <article className="task-item"><h2>完成左侧侧边栏</h2><p>工作 · 高优先级 · 今天</p></article>
-          <article className="task-item"><h2>完成左侧侧边栏</h2><p>工作 · 高优先级 · 今天</p></article>
-          <article className="task-item"><h2>完成左侧侧边栏</h2><p>工作 · 高优先级 · 今天</p></article>
+
+          {tasks.map(task => (
+            <article className={`task-item ${task.completed ? 'completed' : ''}`} key={task.id}>
+              <label className="task-check">
+                <input type="checkbox" />
+                <span>
+                  <h2>{task.title}</h2>
+                  <p>{task.category} · {task.dueDate}</p>
+                </span>
+              </label>
+              <button className="icon-button" type="button"
+                onClick={() => setTasks((current) => current.filter((item) => item.id !== task.id))}>
+                <Trash2 size={17} />
+              </button>
+            </article>
+          ))}
         </section>
       </main>
     </div>

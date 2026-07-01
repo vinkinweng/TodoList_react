@@ -219,6 +219,9 @@ select,
     border-radius: 10px;
     background: linear-gradient(180deg, var(--bg-primary), var(--bg-secondary));
     box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .task-item h2 {
@@ -226,7 +229,22 @@ select,
     font-size: 16px;
 }
 
+.task-item.completed h2 {
+    text-decoration: line-through;
+    color: var(--text-secondary);
+}
+
+.task-check {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .task-item p {
     margin: 0;
     color: var(--text-secondary);
+}
+
+.icon-button:hover {
+    background: #e9eef5;
 }
