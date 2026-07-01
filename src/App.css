@@ -196,3 +196,37 @@ select,
     background: var(--bg-primary);
     padding: 0 12px;
 }
+
+.primary-button {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.tasks-container {
+    flex: 1;
+    overflow: auto;
+    padding: 20px;
+    display: grid;
+    align-content: start;
+    gap: 12px;
+
+}
+
+.task-item {
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: linear-gradient(180deg, var(--bg-primary), var(--bg-secondary));
+    box-shadow: var(--shadow);
+}
+
+.task-item h2 {
+    margin: 0 0 6px;
+    font-size: 16px;
+}
+
+.task-item p {
+    margin: 0;
+    color: var(--text-secondary);
+}
