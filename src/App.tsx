@@ -33,6 +33,14 @@ function App() {
             <div className="stat"><span>无截止日期</span><strong>12</strong></div>
           </div>
         </section>
+
+        <section className="categories-section">
+          <div className="section-title">分类</div>
+          <button className="category-button active" type="button"><span>全部</span><b>12</b></button>
+          <button className="category-button" type="button"><span>工作</span><b>12</b></button>
+          <button className="category-button" type="button"><span>生活</span><b>12</b></button>
+          <button className="category-button" type="button"><span>学习</span><b>12</b></button>
+        </section>
       </aside>
 
 
