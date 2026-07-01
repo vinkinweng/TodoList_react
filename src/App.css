@@ -63,3 +63,65 @@ h1 {
     border-radius: 6px;
     background: var(--bg-primary);
 }
+
+/* 左侧任务概览*/
+
+.stats-container {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.stats-dimension-selector {
+    display: flex;
+    padding: 3px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-primary);
+}
+
+.dimension-btn {
+    flex: 1;
+    height: 34px;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.dimension-btn.active {
+    background: var(--primary);
+    color: white;
+}
+
+.stats-date-range {
+    padding: 8px;
+    margin: 8px 0;
+    border-radius: 8px;
+    background: rgb(13 110 253 / 8%);
+    text-align: center;
+}
+
+.stats-data {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.stat {
+    min-height: 72px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-primary);
+}
+
+.stat span {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.stat strong {
+    font-size: 20px;
+}
