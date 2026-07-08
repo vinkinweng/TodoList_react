@@ -1,4 +1,4 @@
-import { Moon, Search, Trash2, Plus } from 'lucide-react';
+import { Moon, Search, Trash2, Plus, X } from 'lucide-react';
 import { useState } from 'react';
 import './App.css';
 
@@ -20,6 +20,8 @@ const initialTasks: TodoTask[] = [
 function App() {
   const [tasks, setTasks] = useState(initialTasks);
   const [newTitle, setNewTitle] = useState('');
+  //弹窗是否显示
+  const [isAddingTask, setIsAddingTask] = useState(false);
   //添加任务
   function addTask() {
     setTasks((current) => [
@@ -79,7 +81,7 @@ function App() {
           <select defaultValue="list"><option value="list">列表视图</option></select>
           <select defaultValue="active"><option value="active">未完成</option></select>
           <select defaultValue="all"><option value="all">全部日期</option></select>
-          <button className="primary-button" type="button" onClick={addTask}><Plus size={18} />新任务</button>
+          <button className="primary-button" type="button" onClick={() => setIsAddingTask(true)}><Plus size={18} />新任务</button>
         </header>
         <section className="tasks-container">
 
@@ -100,6 +102,47 @@ function App() {
           ))}
         </section>
       </main>
+
+      {/*弹窗*/}
+      {isAddingTask && (
+        <div className="dialog-backdrop">
+          <section className="dialog">
+            <header className="dialog-header">
+              <h2 id="add-task-title">新任务</h2>
+              <button className="icon-button" type="button" onClick={() => setIsAddingTask(false)}>
+                <X size={18} />
+              </button>
+            </header>
+            <label className="field">
+              <span>标题</span>
+              <input
+                autoFocus
+                value=""
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') addTask();
+                }}
+                placeholder="输入任务标题"
+              />
+            </label>
+            <label className="field">
+              <span>分类</span>
+              <select>
+                <option value="work">工作</option>
+                <option value="life">生活</option>
+                <option value="study">学习</option>
+              </select>
+            </label>
+            <label className="field">
+              <span>截止日期</span>
+              <input value="" type="date" />
+            </label>
+            <footer className="dialog-actions">
+              <button className="secondary-button" type="button" onClick={() => setIsAddingTask(false)}>取消</button>
+              <button className="primary-button" type="button" onClick={addTask}>保存</button>
+            </footer>
+          </section>
+        </div>
+      )}
     </div>
   )
 }

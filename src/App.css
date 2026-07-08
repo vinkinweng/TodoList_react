@@ -251,3 +251,67 @@ select,
 .icon-button:hover {
     background: #e9eef5;
 }
+
+/* 弹窗样式*/
+.dialog-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    display: grid;
+    /* 整个弹窗会变成一个grid容器，然后他唯一的字元素可以使用place-items: center 居中对齐 */
+    place-items: center;
+    padding: 20px;
+    background: rgba(15, 23, 42, .42);
+}
+
+.dialog {
+    width: 440px;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-primary);
+    box-shadow: 0 18px 46px rgba(15, 23, 42, .22);
+}
+
+.dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.dialog-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+
+
+.field {
+    display: grid;
+    gap: 7px;
+    margin-bottom: 12px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+.field input,
+.field select {
+    min-height: 40px;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 16px;
+}
