@@ -15,21 +15,58 @@ const initialTasks: TodoTask[] = [
   { id: 2, title: '完成左侧侧边栏', category: '学习', completed: false, dueDate: '本周' },
   { id: 3, title: '完成左侧侧边栏', category: '生活', completed: true, dueDate: '无日期' }
 ];
-
+type TodoCategory = {
+  id: string;
+  name: string;
+  color: string;
+};
+type TodoData = {
+  updatedAt: string;
+  tasks: TodoTask[];
+  categories: TodoCategory[];
+  settings: { theme: 'light' | 'dark' };
+};
+const fallbackData: TodoData = {
+  updatedAt: new Date().toISOString(),
+  tasks: [],
+  categories: [
+    { id: 'work', name: '工作', color: '#2563eb' },
+    { id: 'life', name: '生活', color: '#16a34a' },
+    { id: 'study', name: '学习', color: '#f59e0b' }
+  ],
+  settings: { theme: 'light' }
+};
 
 function App() {
   const [tasks, setTasks] = useState(initialTasks);
-  const [newTitle, setNewTitle] = useState('');
   //弹窗是否显示
   const [isAddingTask, setIsAddingTask] = useState(false);
+  const [draftTitle, setDraftTitle] = useState('');
+  //分类
+  const [draftCategoryId, setDraftCategoryId] = useState('work');
+  //日期
+  const [draftDueDate, setDraftDueDate] = useState('');
+  const [data, setData] = useState(fallbackData);
+
   //添加任务
   function addTask() {
+    const title = draftTitle.trim();
+    if (!title) {
+      alert('请输入任务标题');
+      return;
+    }
+
+
+
     setTasks((current) => [
-      { id: Date.now(), title: '新任务添加', category: '工作', completed: false, dueDate: '今天' },
+      { id: Date.now(), title, category: draftCategoryId, completed: false, dueDate: draftDueDate },
       ...current
     ]);
     console.log(tasks.values);
-    setNewTitle('');
+    setDraftTitle('');
+    setDraftCategoryId('work');
+    setDraftDueDate('');
+    setIsAddingTask(false);
   }
   return (
     <div className="container">
@@ -117,24 +154,25 @@ function App() {
               <span>标题</span>
               <input
                 autoFocus
-                value=""
+                value={draftTitle}
                 onKeyDown={(event) => {
                   if (event.key === 'Enter') addTask();
                 }}
+                onChange={(event) => setDraftTitle(event.target.value)}
                 placeholder="输入任务标题"
               />
             </label>
             <label className="field">
               <span>分类</span>
-              <select>
-                <option value="work">工作</option>
-                <option value="life">生活</option>
-                <option value="study">学习</option>
+              <select value={draftCategoryId} onChange={(event) => setDraftCategoryId(event.target.value)}>
+                {data.categories.map((category) => (
+                  <option key={category.id} value={category.id}>{category.name}</option>
+                ))}
               </select>
             </label>
             <label className="field">
               <span>截止日期</span>
-              <input value="" type="date" />
+              <input value={draftDueDate} type="date" onChange={(event) => setDraftDueDate(event.target.value)} />
             </label>
             <footer className="dialog-actions">
               <button className="secondary-button" type="button" onClick={() => setIsAddingTask(false)}>取消</button>
