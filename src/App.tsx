@@ -1,5 +1,5 @@
 import { Moon, Search, Trash2, Plus, X, Edit3 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 
 type TodoTask = {
@@ -11,9 +11,9 @@ type TodoTask = {
 };
 
 const initialTasks: TodoTask[] = [
-  { id: 1, title: '完成左侧侧边栏', category: '工作', completed: false, dueDate: '今天' },
-  { id: 2, title: '完成左侧侧边栏', category: '学习', completed: false, dueDate: '本周' },
-  { id: 3, title: '完成左侧侧边栏', category: '生活', completed: true, dueDate: '无日期' }
+  { id: 1, title: '完成左侧侧边栏', category: '工作', completed: false, dueDate: '2026-05-27' },
+  { id: 2, title: '完成左侧侧边栏', category: '学习', completed: false, dueDate: '2026-06-27' },
+  { id: 3, title: '完成左侧侧边栏', category: '生活', completed: true, dueDate: '' }
 ];
 type TodoCategory = {
   id: string;
@@ -50,6 +50,8 @@ function App() {
   const [formTitle, setformTitle] = useState('新任务');
   const [taskId, setTaskId] = useState(0);
 
+  // 已完成的数量
+  const [completedCount, setCompletedCount] = useState(0);
   //搜索内容
   const [search, setSearch] = useState('');
   // 筛选
@@ -120,6 +122,19 @@ function App() {
 
 
 
+  useEffect(() => {
+    setCompletedCount(tasks.filter((task) => task.completed).length);
+    console.log("completedCount" + tasks.length)
+  }, [tasks, completedCount]);
+
+
+  // 通过id 修改任务状态
+  function onToggle(id: number) {
+    setTasks(tasks => tasks.map((task) => (
+      task.id === id ? { ...task, completed: !task.completed } : task
+    )))
+  }
+
   return (
     <div className="container">
       <aside className='sidebar'>
@@ -144,10 +159,10 @@ function App() {
           </div>
           <div className="stats-date-range">全部时间</div>
           <div className="stats-data">
-            <div className="stat"><span>总任务</span><strong>12</strong></div>
-            <div className="stat"><span>已完成</span><strong>12</strong></div>
-            <div className="stat"><span>完成率</span><strong>42%</strong></div>
-            <div className="stat"><span>无截止日期</span><strong>12</strong></div>
+            <div className="stat"><span>总任务</span><strong>{tasks.length}</strong></div>
+            <div className="stat"><span>已完成</span><strong>{completedCount}</strong></div>
+            <div className="stat"><span>完成率</span><strong>{tasks.length ? Math.round((completedCount / tasks.length) * 100) + '%' : '0%'}</strong></div>
+            <div className="stat"><span>无截止日期</span><strong>{tasks.filter((task) => !task.dueDate).length}</strong></div>
           </div>
         </section>
 
@@ -177,7 +192,7 @@ function App() {
           {filteredTasks.map(task => (
             <article className={`task-item ${task.completed ? 'completed' : ''}`} key={task.id}>
               <label className="task-check">
-                <input type="checkbox" />
+                <input type="checkbox" checked={task.completed} onChange={(e) => onToggle(task.id)} />
                 <span>
                   <h2>{task.title}</h2>
                   <p>{task.category} · {task.dueDate}</p>
