@@ -1,4 +1,4 @@
-import { Moon, Search, Trash2, Plus, X } from 'lucide-react';
+import { Moon, Search, Trash2, Plus, X, Edit3 } from 'lucide-react';
 import { useState } from 'react';
 import './App.css';
 
@@ -47,7 +47,8 @@ function App() {
   //日期
   const [draftDueDate, setDraftDueDate] = useState('');
   const [data, setData] = useState(fallbackData);
-
+  const [formTitle, setformTitle] = useState('新任务');
+  const [taskId, setTaskId] = useState(0);
   //添加任务
   function addTask() {
     const title = draftTitle.trim();
@@ -55,19 +56,62 @@ function App() {
       alert('请输入任务标题');
       return;
     }
-
-
-
     setTasks((current) => [
       { id: Date.now(), title, category: draftCategoryId, completed: false, dueDate: draftDueDate },
       ...current
     ]);
-    console.log(tasks.values);
+  }
+
+  //编辑任务
+  function onEdit(task: TodoTask) {
+    setIsAddingTask(true);
+    setformTitle("编辑任务");
+    setTaskId(task.id);
+    setDraftTitle(task.title);
+    setDraftCategoryId(task.category);
+    setDraftDueDate(task.dueDate);
+    console.log("onEdit")
+    console.log(task)
+  }
+  function taskEdit() {
+    setTasks(previousTasks =>
+      previousTasks.map(item => {
+        console.log(item);
+        if (item.id === taskId) {
+          return {
+            ...item,
+            title: draftTitle,
+            category: draftCategoryId,
+            completed: false,
+            dueDate: draftDueDate
+          }
+        }
+        return item;
+      })
+
+    )
+
+    setformTitle("新任务");
+  }
+
+  //点击保存按钮，根据stats 的值判断是添加任务还是修改任务
+  // 2为修改
+  // 默认为添加
+  function saveClick(task?: TodoTask) {
+    if (formTitle == "编辑任务") {
+      taskEdit();
+    } else {
+      console.log("else")
+      addTask();
+    }
+
     setDraftTitle('');
     setDraftCategoryId('work');
     setDraftDueDate('');
     setIsAddingTask(false);
   }
+
+
   return (
     <div className="container">
       <aside className='sidebar'>
@@ -131,10 +175,14 @@ function App() {
                   <p>{task.category} · {task.dueDate}</p>
                 </span>
               </label>
-              <button className="icon-button" type="button"
-                onClick={() => setTasks((current) => current.filter((item) => item.id !== task.id))}>
-                <Trash2 size={17} />
-              </button>
+              <div className="task-actions">
+                <button className="icon-button" onClick={() => onEdit(task)}>
+                  <Edit3 size={16} />
+                </button>
+                <button className="icon-button" type="button" onClick={() => setTasks((current) => current.filter((item) => item.id !== task.id))}>
+                  <Trash2 size={16} />
+                </button>
+              </div>
             </article>
           ))}
         </section>
@@ -145,7 +193,7 @@ function App() {
         <div className="dialog-backdrop">
           <section className="dialog">
             <header className="dialog-header">
-              <h2 id="add-task-title">新任务</h2>
+              <h2 id="add-task-title">{formTitle}</h2>
               <button className="icon-button" type="button" onClick={() => setIsAddingTask(false)}>
                 <X size={18} />
               </button>
@@ -176,7 +224,7 @@ function App() {
             </label>
             <footer className="dialog-actions">
               <button className="secondary-button" type="button" onClick={() => setIsAddingTask(false)}>取消</button>
-              <button className="primary-button" type="button" onClick={addTask}>保存</button>
+              <button className="primary-button" type="button" onClick={() => saveClick()}>保存</button>
             </footer>
           </section>
         </div>

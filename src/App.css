@@ -227,6 +227,12 @@ select,
     justify-content: space-between;
 }
 
+.task-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .task-item h2 {
     margin: 0 0 6px;
     font-size: 16px;
@@ -251,6 +257,9 @@ select,
 .icon-button:hover {
     background: #e9eef5;
 }
+
+
+
 
 /* 弹窗样式*/
 .dialog-backdrop {
