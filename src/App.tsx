@@ -49,6 +49,13 @@ function App() {
   const [data, setData] = useState(fallbackData);
   const [formTitle, setformTitle] = useState('新任务');
   const [taskId, setTaskId] = useState(0);
+
+  //搜索内容
+  const [search, setSearch] = useState('');
+  // 筛选
+  const filteredTasks = search.trim().toLowerCase() === "" ? tasks : tasks.filter(task => {
+    return task.title.toLowerCase().includes(search)
+  })
   //添加任务
   function addTask() {
     const title = draftTitle.trim();
@@ -112,6 +119,7 @@ function App() {
   }
 
 
+
   return (
     <div className="container">
       <aside className='sidebar'>
@@ -157,7 +165,7 @@ function App() {
         <header className="app-header">
           <label className="search-box">
             <Search size={18} />
-            <input readOnly placeholder="搜索任务、描述或标签" />
+            <input placeholder="搜索任务、描述或标签" value={search} onChange={(e) => setSearch(e.target.value)} />
           </label>
           <select defaultValue="list"><option value="list">列表视图</option></select>
           <select defaultValue="active"><option value="active">未完成</option></select>
@@ -166,7 +174,7 @@ function App() {
         </header>
         <section className="tasks-container">
 
-          {tasks.map(task => (
+          {filteredTasks.map(task => (
             <article className={`task-item ${task.completed ? 'completed' : ''}`} key={task.id}>
               <label className="task-check">
                 <input type="checkbox" />
