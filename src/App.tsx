@@ -11,10 +11,15 @@ type TodoTask = {
 };
 
 const initialTasks: TodoTask[] = [
-  { id: 1, title: '完成左侧侧边栏', category: '工作', completed: false, dueDate: '2026-05-27' },
-  { id: 2, title: '完成左侧侧边栏', category: '学习', completed: false, dueDate: '2026-06-27' },
-  { id: 3, title: '完成左侧侧边栏', category: '生活', completed: true, dueDate: '' }
+  { id: 1, title: '完成左侧侧边栏', category: 'work', completed: false, dueDate: '2026-05-27' },
+  { id: 2, title: '完成左侧侧边栏', category: 'life', completed: false, dueDate: '2026-06-27' },
+  { id: 3, title: '完成左侧侧边栏', category: 'study', completed: true, dueDate: '' }
 ];
+const categorys: TodoCategory[] = [
+  { id: 'work', name: '工作', color: '#2563eb' },
+  { id: 'life', name: '生活', color: '#16a34a' },
+  { id: 'study', name: '学习', color: '#f59e0b' }
+]
 type TodoCategory = {
   id: string;
   name: string;
@@ -29,11 +34,7 @@ type TodoData = {
 const fallbackData: TodoData = {
   updatedAt: new Date().toISOString(),
   tasks: [],
-  categories: [
-    { id: 'work', name: '工作', color: '#2563eb' },
-    { id: 'life', name: '生活', color: '#16a34a' },
-    { id: 'study', name: '学习', color: '#f59e0b' }
-  ],
+  categories: categorys,
   settings: { theme: 'light' }
 };
 
@@ -49,15 +50,16 @@ function App() {
   const [data, setData] = useState(fallbackData);
   const [formTitle, setformTitle] = useState('新任务');
   const [taskId, setTaskId] = useState(0);
-
+  const [categories, setCategories] = useState(categorys)
   // 已完成的数量
   const [completedCount, setCompletedCount] = useState(0);
   //搜索内容
   const [search, setSearch] = useState('');
-  // 筛选
-  const filteredTasks = search.trim().toLowerCase() === "" ? tasks : tasks.filter(task => {
-    return task.title.toLowerCase().includes(search)
-  })
+
+  const [selected, setSelected] = useState('all')
+  //显示的内容
+  const [filteredTasks, setFilteredTasks] = useState(initialTasks)
+
   //添加任务
   function addTask() {
     const title = draftTitle.trim();
@@ -127,7 +129,19 @@ function App() {
     console.log("completedCount" + tasks.length)
   }, [tasks, completedCount]);
 
+  // 筛选
+  useEffect(() => {
+    setFilteredTasks(search.trim().toLowerCase() === "" ? tasks : tasks.filter(task => {
+      return task.title.toLowerCase().includes(search)
+    }));
+  }, [])
 
+  useEffect(() => {
+    setFilteredTasks(selected.trim().toLowerCase() === "all" ? tasks : tasks.filter(task => {
+      //return task.title.toLowerCase().includes(search)
+      return task.category.toLowerCase().includes(selected);
+    }));
+  }, [selected])
   // 通过id 修改任务状态
   function onToggle(id: number) {
     setTasks(tasks => tasks.map((task) => (
@@ -168,10 +182,16 @@ function App() {
 
         <section className="categories-section">
           <div className="section-title">分类</div>
-          <button className="category-button active" type="button"><span>全部</span><b>12</b></button>
-          <button className="category-button" type="button"><span>工作</span><b>12</b></button>
-          <button className="category-button" type="button"><span>生活</span><b>12</b></button>
-          <button className="category-button" type="button"><span>学习</span><b>12</b></button>
+          <button className={selected === "all" ? "category-button active" : "category-button"} type="button" id="all" onClick={() => setSelected("all")}>
+            <span>全部</span>
+            <b>{tasks.length}</b>
+          </button>
+          {categories.map(category => (
+            <button className={selected === category.id ? "category-button active" : "category-button"} type="button" id={category.id} onClick={() => setSelected(category.id)}>
+              <span>{category.name}</span>
+              <b>{tasks.filter((task) => task.category == category.id).length}</b>
+            </button>
+          ))}
         </section>
       </aside>
 
@@ -195,7 +215,8 @@ function App() {
                 <input type="checkbox" checked={task.completed} onChange={(e) => onToggle(task.id)} />
                 <span>
                   <h2>{task.title}</h2>
-                  <p>{task.category} · {task.dueDate}</p>
+                  <p>
+                    {categorys.find(item => item.id === task.category)?.name} · {task.dueDate}</p>
                 </span>
               </label>
               <div className="task-actions">
