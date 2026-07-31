@@ -1,8 +1,8 @@
-import { Moon, Search, Trash2, Plus, X, Edit3 } from 'lucide-react';
+import { Search, Trash2, Plus, X, Edit3 } from 'lucide-react';
 import { useState } from 'react';
 import './App.css';
 import type { TodoTask, TodoCategory, TodoData } from "./types/todo"
-
+import Sidebar from './components/Sidebar';
 
 const initialTasks: TodoTask[] = [
   { id: 1, title: '完成左侧侧边栏', category: 'work', completed: false, dueDate: '2026-05-27' },
@@ -40,8 +40,7 @@ function App() {
   const [search, setSearch] = useState('');
 
   const [selected, setSelected] = useState('all')
-  // 已完成的数量
-  const completedCount = tasks.filter(task => task.completed).length;
+
   //添加任务
   function addTask() {
     const title = draftTitle.trim();
@@ -131,49 +130,13 @@ function App() {
 
   return (
     <div className="container">
-      <aside className='sidebar'>
-        <div className="sidebar-header">
-          <div className="brand-block">
-            <div className="brand-mark">T</div>
-            <div>
-              <h1>Todo List</h1>
-              <span>Local JSON Workspace</span>
-            </div>
-          </div>
-          <button className='icon-button' type="button"><Moon size={18} /></button>
-        </div>
+      <Sidebar
+        tasks={tasks}
+        categories={categories}
+        selectedCategory={selected}
+        onSelectCategory={setSelected}
+      />
 
-        <section className="stats-container">
-          <div className="stats-dimension-selector">
-            <button className="dimension-btn active" type="button">全部</button>
-            <button className="dimension-btn" type="button">年</button>
-            <button className="dimension-btn" type="button">月</button>
-            <button className="dimension-btn" type="button">周</button>
-            <button className="dimension-btn" type="button">日</button>
-          </div>
-          <div className="stats-date-range">全部时间</div>
-          <div className="stats-data">
-            <div className="stat"><span>总任务</span><strong>{tasks.length}</strong></div>
-            <div className="stat"><span>已完成</span><strong>{completedCount}</strong></div>
-            <div className="stat"><span>完成率</span><strong>{tasks.length ? Math.round((completedCount / tasks.length) * 100) + '%' : '0%'}</strong></div>
-            <div className="stat"><span>无截止日期</span><strong>{tasks.filter((task) => !task.dueDate).length}</strong></div>
-          </div>
-        </section>
-
-        <section className="categories-section">
-          <div className="section-title">分类</div>
-          <button className={selected === "all" ? "category-button active" : "category-button"} type="button" id="all" onClick={() => setSelected("all")}>
-            <span>全部</span>
-            <b>{tasks.length}</b>
-          </button>
-          {categories.map(category => (
-            <button className={selected === category.id ? "category-button active" : "category-button"} type="button" id={category.id} onClick={() => setSelected(category.id)} key={category.id}>
-              <span>{category.name}</span>
-              <b>{tasks.filter((task) => task.category == category.id).length}</b>
-            </button>
-          ))}
-        </section>
-      </aside>
 
 
       <main className="main-content">
