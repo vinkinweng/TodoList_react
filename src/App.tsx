@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import type { TodoTask, TodoCategory, TodoData } from "./types/todo"
 import Sidebar from './components/Sidebar';
@@ -22,9 +22,20 @@ const fallbackData: TodoData = {
   categories: categorys,
   settings: { theme: 'light' }
 };
-
+const TASKS_STORAGE_KEY = 'todo-tasks';
 function App() {
-  const [tasks, setTasks] = useState(initialTasks);
+  const [tasks, setTasks] = useState<TodoTask[]>(() => {
+    const savedTasks = localStorage.getItem(TASKS_STORAGE_KEY);
+    if (!savedTasks) {
+      return initialTasks;
+    }
+
+    try {
+      return JSON.parse(savedTasks) as TodoTask[];
+    } catch {
+      return initialTasks;
+    }
+  });
   //弹窗是否显示
   const [isAddingTask, setIsAddingTask] = useState(false);
   const [draftTitle, setDraftTitle] = useState('');
@@ -154,6 +165,14 @@ function App() {
     setDraftDueDate('');
     setIsAddingTask(true);
   }
+
+
+  useEffect(() => {
+    localStorage.setItem(
+      TASKS_STORAGE_KEY,
+      JSON.stringify(tasks)
+    );
+  }, [tasks]);
   return (
     <div className="container">
       <Sidebar
