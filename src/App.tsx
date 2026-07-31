@@ -1,18 +1,12 @@
 import { Moon, Search, Trash2, Plus, X, Edit3 } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './App.css';
+import type { TodoTask, TodoCategory, TodoData } from "./types/todo"
 
-type TodoTask = {
-  id: number;
-  title: string;
-  category: string;
-  completed: boolean;
-  dueDate: string;
-};
 
 const initialTasks: TodoTask[] = [
   { id: 1, title: '完成左侧侧边栏', category: 'work', completed: false, dueDate: '2026-05-27' },
-  { id: 2, title: '完成左侧侧边栏', category: 'life', completed: false, dueDate: '2026-06-27' },
+  { id: 2, title: '完成左侧侧边栏', category: 'life', completed: true, dueDate: '2026-06-27' },
   { id: 3, title: '完成左侧侧边栏', category: 'study', completed: true, dueDate: '' }
 ];
 const categorys: TodoCategory[] = [
@@ -20,17 +14,7 @@ const categorys: TodoCategory[] = [
   { id: 'life', name: '生活', color: '#16a34a' },
   { id: 'study', name: '学习', color: '#f59e0b' }
 ]
-type TodoCategory = {
-  id: string;
-  name: string;
-  color: string;
-};
-type TodoData = {
-  updatedAt: string;
-  tasks: TodoTask[];
-  categories: TodoCategory[];
-  settings: { theme: 'light' | 'dark' };
-};
+
 const fallbackData: TodoData = {
   updatedAt: new Date().toISOString(),
   tasks: [],
@@ -51,15 +35,13 @@ function App() {
   const [formTitle, setformTitle] = useState('新任务');
   const [taskId, setTaskId] = useState(0);
   const [categories, setCategories] = useState(categorys)
-  // 已完成的数量
-  const [completedCount, setCompletedCount] = useState(0);
+
   //搜索内容
   const [search, setSearch] = useState('');
 
   const [selected, setSelected] = useState('all')
-  //显示的内容
-  const [filteredTasks, setFilteredTasks] = useState(initialTasks)
-
+  // 已完成的数量
+  const completedCount = tasks.filter(task => task.completed).length;
   //添加任务
   function addTask() {
     const title = draftTitle.trim();
@@ -122,28 +104,26 @@ function App() {
     setIsAddingTask(false);
   }
 
+  // 显示的任务列表，// 筛选
+  const filteredTasks = tasks.filter(task => {
+    const keyword = search.trim().toLowerCase();
+
+    const matchesSearch =
+      keyword === '' ||
+      task.title.toLowerCase().includes(keyword);
+
+    const matchesCategory =
+      selected === 'all' ||
+      task.category === selected;
+
+    return matchesSearch && matchesCategory;
+  });
 
 
-  useEffect(() => {
-    setCompletedCount(tasks.filter((task) => task.completed).length);
-    console.log("completedCount" + tasks.length)
-  }, [tasks, completedCount]);
 
-  // 筛选
-  useEffect(() => {
-    setFilteredTasks(search.trim().toLowerCase() === "" ? tasks : tasks.filter(task => {
-      return task.title.toLowerCase().includes(search)
-    }));
-  }, [])
-
-  useEffect(() => {
-    setFilteredTasks(selected.trim().toLowerCase() === "all" ? tasks : tasks.filter(task => {
-      //return task.title.toLowerCase().includes(search)
-      return task.category.toLowerCase().includes(selected);
-    }));
-  }, [selected])
   // 通过id 修改任务状态
   function onToggle(id: number) {
+
     setTasks(tasks => tasks.map((task) => (
       task.id === id ? { ...task, completed: !task.completed } : task
     )))
