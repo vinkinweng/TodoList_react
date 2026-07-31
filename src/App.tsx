@@ -1,20 +1,11 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import type { TodoTask, TodoCategory, TodoData, ThemeMode } from "./types/todo"
+import type { TodoTask, TodoData, ThemeMode } from "./types/todo"
 import Sidebar from './components/Sidebar';
 import TaskFormDialog from './components/TaskFormDialog';
 import TaskList from './components/TaskList';
 import AppHeader from './components/AppHeader';
-const initialTasks: TodoTask[] = [
-  { id: 1, title: '完成左侧侧边栏', category: 'work', completed: false, dueDate: '2026-05-27' },
-  { id: 2, title: '完成左侧侧边栏', category: 'life', completed: true, dueDate: '2026-06-27' },
-  { id: 3, title: '完成左侧侧边栏', category: 'study', completed: true, dueDate: '' }
-];
-const categorys: TodoCategory[] = [
-  { id: 'work', name: '工作', color: '#2563eb' },
-  { id: 'life', name: '生活', color: '#16a34a' },
-  { id: 'study', name: '学习', color: '#f59e0b' }
-]
+import { initialTasks, categorys } from './data/todoData';
 
 const fallbackData: TodoData = {
   updatedAt: new Date().toISOString(),
@@ -127,7 +118,6 @@ function App() {
     const matchesCategory =
       selected === 'all' ||
       task.category === selected;
-
     return matchesSearch && matchesCategory;
   });
 
@@ -135,7 +125,6 @@ function App() {
 
   // 通过id 修改任务状态
   function onToggle(id: number) {
-
     setTasks(tasks => tasks.map((task) => (
       task.id === id ? { ...task, completed: !task.completed } : task
     )))
