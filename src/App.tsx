@@ -1,9 +1,10 @@
-import { Search, Trash2, Plus, Edit3 } from 'lucide-react';
+import { Search, Plus } from 'lucide-react';
 import { useState } from 'react';
 import './App.css';
 import type { TodoTask, TodoCategory, TodoData } from "./types/todo"
 import Sidebar from './components/Sidebar';
 import TaskFormDialog from './components/TaskFormDialog';
+import TaskItem from './components/TaskItem';
 
 const initialTasks: TodoTask[] = [
   { id: 1, title: '完成左侧侧边栏', category: 'work', completed: false, dueDate: '2026-05-27' },
@@ -75,7 +76,6 @@ function App() {
             ...item,
             title: draftTitle,
             category: draftCategoryId,
-            completed: false,
             dueDate: draftDueDate
           }
         }
@@ -139,6 +139,13 @@ function App() {
     setDraftCategoryId('work');
     setDraftDueDate('');
   }
+
+  // 删除任务
+  function onDelete(id: number) {
+    setTasks(currentTasks =>
+      currentTasks.filter(task => task.id !== id)
+    );
+  }
   return (
     <div className="container">
       <Sidebar
@@ -162,26 +169,15 @@ function App() {
           <button className="primary-button" type="button" onClick={() => setIsAddingTask(true)}><Plus size={18} />新任务</button>
         </header>
         <section className="tasks-container">
-
           {filteredTasks.map(task => (
-            <article className={`task-item ${task.completed ? 'completed' : ''}`} key={task.id}>
-              <label className="task-check">
-                <input type="checkbox" checked={task.completed} onChange={(e) => onToggle(task.id)} />
-                <span>
-                  <h2>{task.title}</h2>
-                  <p>
-                    {categorys.find(item => item.id === task.category)?.name} · {task.dueDate}</p>
-                </span>
-              </label>
-              <div className="task-actions">
-                <button className="icon-button" onClick={() => onEdit(task)}>
-                  <Edit3 size={16} />
-                </button>
-                <button className="icon-button" type="button" onClick={() => setTasks((current) => current.filter((item) => item.id !== task.id))}>
-                  <Trash2 size={16} />
-                </button>
-              </div>
-            </article>
+            <TaskItem
+              key={task.id}
+              task={task}
+              categories={categories}
+              onToggle={onToggle}
+              onEdit={onEdit}
+              onDelete={onDelete}
+            />
           ))}
         </section>
       </main>
