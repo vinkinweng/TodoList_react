@@ -20,7 +20,7 @@ function TaskItem({
     return (
         <article className={`task-item ${task.completed ? 'completed' : ''}`} key={task.id}>
             <label className="task-check">
-                <input type="checkbox" checked={task.completed} onChange={(e) => onToggle(task.id)} />
+                <input type="checkbox" checked={task.completed} onChange={() => onToggle(task.id)} />
                 <span>
                     <h2>{task.title}</h2>
                     <p>

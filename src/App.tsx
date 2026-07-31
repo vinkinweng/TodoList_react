@@ -33,14 +33,13 @@ function App() {
   const [draftCategoryId, setDraftCategoryId] = useState('work');
   //日期
   const [draftDueDate, setDraftDueDate] = useState('');
-  const [data, setData] = useState(fallbackData);
   const [formTitle, setformTitle] = useState('新任务');
   const [taskId, setTaskId] = useState(0);
-  const [categories, setCategories] = useState(categorys)
   const [theme, setTheme] = useState<ThemeMode>(() => {
     return localStorage.getItem('todo-theme') === 'dark' ? 'dark' : 'light';
   });
-
+  const data = fallbackData;
+  const categories = categorys;
   //搜索内容
   const [search, setSearch] = useState('');
 
