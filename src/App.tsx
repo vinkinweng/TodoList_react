@@ -1,11 +1,10 @@
-import { Search, Plus } from 'lucide-react';
 import { useState } from 'react';
 import './App.css';
 import type { TodoTask, TodoCategory, TodoData } from "./types/todo"
 import Sidebar from './components/Sidebar';
 import TaskFormDialog from './components/TaskFormDialog';
-import TaskItem from './components/TaskItem';
 import TaskList from './components/TaskList';
+import AppHeader from './components/AppHeader';
 const initialTasks: TodoTask[] = [
   { id: 1, title: '完成左侧侧边栏', category: 'work', completed: false, dueDate: '2026-05-27' },
   { id: 2, title: '完成左侧侧边栏', category: 'life', completed: true, dueDate: '2026-06-27' },
@@ -90,7 +89,7 @@ function App() {
   //点击保存按钮，根据stats 的值判断是添加任务还是修改任务
   // 2为修改
   // 默认为添加
-  function saveClick(task?: TodoTask) {
+  function saveClick() {
     if (formTitle == "编辑任务") {
       taskEdit();
     } else {
@@ -146,6 +145,15 @@ function App() {
       currentTasks.filter(task => task.id !== id)
     );
   }
+
+  function openAddTaskDialog() {
+    setformTitle('新任务');
+    setTaskId(0);
+    setDraftTitle('');
+    setDraftCategoryId('work');
+    setDraftDueDate('');
+    setIsAddingTask(true);
+  }
   return (
     <div className="container">
       <Sidebar
@@ -155,16 +163,12 @@ function App() {
         onSelectCategory={setSelected}
       />
       <main className="main-content">
-        <header className="app-header">
-          <label className="search-box">
-            <Search size={18} />
-            <input placeholder="搜索任务、描述或标签" value={search} onChange={(e) => setSearch(e.target.value)} />
-          </label>
-          <select defaultValue="list"><option value="list">列表视图</option></select>
-          <select defaultValue="active"><option value="active">未完成</option></select>
-          <select defaultValue="all"><option value="all">全部日期</option></select>
-          <button className="primary-button" type="button" onClick={() => setIsAddingTask(true)}><Plus size={18} />新任务</button>
-        </header>
+
+        <AppHeader
+          search={search}
+          setSearch={setSearch}
+          setIsAddingTask={openAddTaskDialog}
+        />
         <TaskList
           tasks={filteredTasks}
           categories={categories}
