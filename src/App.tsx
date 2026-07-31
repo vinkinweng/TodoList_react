@@ -5,7 +5,7 @@ import type { TodoTask, TodoCategory, TodoData } from "./types/todo"
 import Sidebar from './components/Sidebar';
 import TaskFormDialog from './components/TaskFormDialog';
 import TaskItem from './components/TaskItem';
-
+import TaskList from './components/TaskList';
 const initialTasks: TodoTask[] = [
   { id: 1, title: '完成左侧侧边栏', category: 'work', completed: false, dueDate: '2026-05-27' },
   { id: 2, title: '完成左侧侧边栏', category: 'life', completed: true, dueDate: '2026-06-27' },
@@ -154,9 +154,6 @@ function App() {
         selectedCategory={selected}
         onSelectCategory={setSelected}
       />
-
-
-
       <main className="main-content">
         <header className="app-header">
           <label className="search-box">
@@ -168,18 +165,13 @@ function App() {
           <select defaultValue="all"><option value="all">全部日期</option></select>
           <button className="primary-button" type="button" onClick={() => setIsAddingTask(true)}><Plus size={18} />新任务</button>
         </header>
-        <section className="tasks-container">
-          {filteredTasks.map(task => (
-            <TaskItem
-              key={task.id}
-              task={task}
-              categories={categories}
-              onToggle={onToggle}
-              onEdit={onEdit}
-              onDelete={onDelete}
-            />
-          ))}
-        </section>
+        <TaskList
+          tasks={filteredTasks}
+          categories={categories}
+          onToggle={onToggle}
+          onEdit={onEdit}
+          onDelete={onDelete}
+        />
       </main>
 
       {/*弹窗*/}
