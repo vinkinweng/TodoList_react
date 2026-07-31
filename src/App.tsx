@@ -1,8 +1,9 @@
-import { Search, Trash2, Plus, X, Edit3 } from 'lucide-react';
+import { Search, Trash2, Plus, Edit3 } from 'lucide-react';
 import { useState } from 'react';
 import './App.css';
 import type { TodoTask, TodoCategory, TodoData } from "./types/todo"
 import Sidebar from './components/Sidebar';
+import TaskFormDialog from './components/TaskFormDialog';
 
 const initialTasks: TodoTask[] = [
   { id: 1, title: '完成左侧侧边栏', category: 'work', completed: false, dueDate: '2026-05-27' },
@@ -128,6 +129,16 @@ function App() {
     )))
   }
 
+
+  // 关闭弹窗，清空数据
+  function closeTaskDialog() {
+    setIsAddingTask(false);
+    setformTitle('新任务');
+    setTaskId(0);
+    setDraftTitle('');
+    setDraftCategoryId('work');
+    setDraftDueDate('');
+  }
   return (
     <div className="container">
       <Sidebar
@@ -176,46 +187,19 @@ function App() {
       </main>
 
       {/*弹窗*/}
-      {isAddingTask && (
-        <div className="dialog-backdrop">
-          <section className="dialog">
-            <header className="dialog-header">
-              <h2 id="add-task-title">{formTitle}</h2>
-              <button className="icon-button" type="button" onClick={() => setIsAddingTask(false)}>
-                <X size={18} />
-              </button>
-            </header>
-            <label className="field">
-              <span>标题</span>
-              <input
-                autoFocus
-                value={draftTitle}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter') addTask();
-                }}
-                onChange={(event) => setDraftTitle(event.target.value)}
-                placeholder="输入任务标题"
-              />
-            </label>
-            <label className="field">
-              <span>分类</span>
-              <select value={draftCategoryId} onChange={(event) => setDraftCategoryId(event.target.value)}>
-                {data.categories.map((category) => (
-                  <option key={category.id} value={category.id}>{category.name}</option>
-                ))}
-              </select>
-            </label>
-            <label className="field">
-              <span>截止日期</span>
-              <input value={draftDueDate} type="date" onChange={(event) => setDraftDueDate(event.target.value)} />
-            </label>
-            <footer className="dialog-actions">
-              <button className="secondary-button" type="button" onClick={() => setIsAddingTask(false)}>取消</button>
-              <button className="primary-button" type="button" onClick={() => saveClick()}>保存</button>
-            </footer>
-          </section>
-        </div>
-      )}
+      <TaskFormDialog
+        isOpen={isAddingTask}
+        formTitle={formTitle}
+        draftTitle={draftTitle}
+        draftCategoryId={draftCategoryId}
+        categories={data.categories}
+        draftDueDate={draftDueDate}
+        onTitleChange={setDraftTitle}
+        onCategoryChange={setDraftCategoryId}
+        onDueDateChange={setDraftDueDate}
+        onClose={closeTaskDialog}
+        onSave={saveClick}
+      />
     </div>
   )
 }
