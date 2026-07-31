@@ -1,16 +1,20 @@
-import { Moon } from 'lucide-react';
-import type { TodoTask, TodoCategory } from '../types/todo';
+import { Moon, Sun } from 'lucide-react';
+import type { TodoTask, TodoCategory, ThemeMode } from '../types/todo';
 type SidebarProps = {
     tasks: TodoTask[];   //所有任务
     categories: TodoCategory[];  //所有分类
     selectedCategory: string;  //当前选中的分类
     onSelectCategory: (categoryId: string) => void;  //修改选中分类
+    onToggleTheme: () => void; //修改主题
+    theme: ThemeMode;
 };
 function Sidebar({
     tasks,
     categories,
     selectedCategory,
-    onSelectCategory
+    onSelectCategory,
+    onToggleTheme,
+    theme
 }: SidebarProps) {
     const completedCount = tasks.filter(task => task.completed).length;
     return (
@@ -23,7 +27,9 @@ function Sidebar({
                         <span>Local JSON Workspace</span>
                     </div>
                 </div>
-                <button className='icon-button' type="button"><Moon size={18} /></button>
+                <button className='icon-button' type="button" onClick={onToggleTheme}>
+                    {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                </button>
             </div>
 
             <section className="stats-container">

@@ -255,7 +255,7 @@ select,
 }
 
 .icon-button:hover {
-    background: #e9eef5;
+    background: var(--bg-tertiary);
 }
 
 

@@ -14,5 +14,6 @@ export type TodoData = {
   updatedAt: string;
   tasks: TodoTask[];
   categories: TodoCategory[];
-  settings: { theme: 'light' | 'dark' };
 };
+
+export type ThemeMode = 'light' | 'dark';

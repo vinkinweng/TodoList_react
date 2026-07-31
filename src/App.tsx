@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import type { TodoTask, TodoCategory, TodoData } from "./types/todo"
+import type { TodoTask, TodoCategory, TodoData, ThemeMode } from "./types/todo"
 import Sidebar from './components/Sidebar';
 import TaskFormDialog from './components/TaskFormDialog';
 import TaskList from './components/TaskList';
@@ -19,8 +19,7 @@ const categorys: TodoCategory[] = [
 const fallbackData: TodoData = {
   updatedAt: new Date().toISOString(),
   tasks: [],
-  categories: categorys,
-  settings: { theme: 'light' }
+  categories: categorys
 };
 const TASKS_STORAGE_KEY = 'todo-tasks';
 function App() {
@@ -47,6 +46,9 @@ function App() {
   const [formTitle, setformTitle] = useState('新任务');
   const [taskId, setTaskId] = useState(0);
   const [categories, setCategories] = useState(categorys)
+  const [theme, setTheme] = useState<ThemeMode>(() => {
+    return localStorage.getItem('todo-theme') === 'dark' ? 'dark' : 'light';
+  });
 
   //搜索内容
   const [search, setSearch] = useState('');
@@ -173,6 +175,15 @@ function App() {
       JSON.stringify(tasks)
     );
   }, [tasks]);
+
+  function toggleTheme() {
+    setTheme((value) => value === 'dark' ? 'light' : 'dark');
+  }
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem('todo-theme', theme);
+  }, [theme]);
   return (
     <div className="container">
       <Sidebar
@@ -180,6 +191,8 @@ function App() {
         categories={categories}
         selectedCategory={selected}
         onSelectCategory={setSelected}
+        onToggleTheme={toggleTheme}
+        theme={theme}
       />
       <main className="main-content">
 
