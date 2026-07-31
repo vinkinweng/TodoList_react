@@ -167,7 +167,7 @@ function App() {
             <b>{tasks.length}</b>
           </button>
           {categories.map(category => (
-            <button className={selected === category.id ? "category-button active" : "category-button"} type="button" id={category.id} onClick={() => setSelected(category.id)}>
+            <button className={selected === category.id ? "category-button active" : "category-button"} type="button" id={category.id} onClick={() => setSelected(category.id)} key={category.id}>
               <span>{category.name}</span>
               <b>{tasks.filter((task) => task.category == category.id).length}</b>
             </button>
