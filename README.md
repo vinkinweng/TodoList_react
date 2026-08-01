@@ -1,75 +1,60 @@
-# React + TypeScript + Vite
+# Web ToDo管理アプリ
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ReactとTypeScriptを使用して制作したタスク管理Webアプリです。
 
-Currently, two official plugins are available:
+タスクの追加・編集・削除、検索、カテゴリ管理、予定日の設定などに対応しています。登録したデータはブラウザの`localStorage`に保存されます。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## アプリプレビュー
 
-## React Compiler
+https://vinkinweng.github.io/TodoList_react/
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+![メイン画面](docs/images/main-light.png)
 
-## Expanding the ESLint configuration
+## 主な機能
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 実装済み
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- タスクの追加・編集・削除
+- 完了・未完了状態の切り替え
+- タスクの検索
+- カテゴリの設定・カテゴリ別表示
+- 予定日の設定
+- `localStorage`へのデータ保存
+- ライトモード・ダークモードの切り替え
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 開発中
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- 完了タスクの自動並び替え
+- 予定日による並び替え
+- カレンダー表示
+- 年・月・週・日ごとのタスク表示
 
-```
+## 使用技術
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- React
+- TypeScript
+- Vite
+- localStorage
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 画面イメージ
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### ライトモード
 
+![ライトモード](docs/images/main-light.png)
+
+### ダークモード
+
+![ダークモード](docs/images/main-dark.png)
+
+### タスクの追加・編集
+
+![タスク追加・編集画面](docs/images/task-form.png)
+
+## 実行方法
+
+```bash
+git clone -b develop https://github.com/vinkinweng/TodoList_react.git
+cd TodoList_react
+npm install
+npm run dev
 ```
